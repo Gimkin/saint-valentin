@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>💥❤</title>
+
+<style>
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.envelope {
+  width: 240px;
+  height: 150px;
+  position: absolute;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.5s;
+}
+
+.back {
+  background: #ff6f91;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+.flap {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-left: 120px solid transparent;
+  border-right: 120px solid transparent;
+  border-top: 80px solid #ff4d6d;
+}
+
+.text {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 2;
+  position: absolute;
+  text-align: center;
+}
+
+.heart {
+  position: absolute;
+  font-size: 28px;
+  opacity: 0;
+  animation: explode 1.2s ease-out forwards;
+}
+
+@keyframes explode {
+  0% {
+    transform: translate(0, 0) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Pluie de cœurs */
+.rain-heart {
+  position: absolute;
+  font-size: 20px;
+  color: #ff4d6d;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-30px); }
+  100% { transform: translateY(100vh); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="envelope" id="envelope" onclick="explodeHearts()">
+  <div class="back"></div>
+  <div class="flap"></div>
+</div>
+
+<div class="text" id="message" style="top: 50%;">Clique sur l’enveloppe 💌</div>
+
+<script>
+let exploded = false;
+
+function explodeHearts() {
+  if (exploded) return;
+  exploded = true;
+
+  document.getElementById("message").innerText = "💥💖";
+
+  const envelope = document.getElementById("envelope");
+  envelope.style.transform = "scale(1.3) rotate(-10deg)";
+  envelope.style.opacity = "0";
+
+  for (let i = 0; i < 50; i++) {
+    createHeart();
+  }
+
+  setTimeout(() => {
+    window.location.href = "love.html";
+  }, 2500);
+}
+
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "💖";
+
+  heart.style.left = (window.innerWidth / 2 - 30) + "px";
+  heart.style.top = (window.innerHeight / 2 - 20) + "px";
+
+  const angle = Math.random() * Math.PI * 2;
+  const distance = Math.random() * 200 + 100;
+  const x = Math.cos(angle) * distance;
+  const y = Math.sin(angle) * distance;
+
+  heart.style.transform = `translate(${x}px, ${y}px) scale(1)`;
+  heart.style.opacity = "1";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 1200);
+}
+
+// ---------------- Pluie de cœurs autour ----------------
+function createRainHeart() {
+  const heart = document.createElement("div");
+  heart.className = "rain-heart";
+  heart.innerText = "💖";
+
+  const middleWidth = 300; // largeur zone centrale à laisser vide
+  let x;
+  // choisir position aléatoire hors zone centrale
+  if(Math.random() < 0.5) {
+    // côté gauche
+    x = Math.random() * (window.innerWidth/2 - middleWidth/2);
+  } else {
+    // côté droit
+    x = window.innerWidth/2 + middleWidth/2 + Math.random() * (window.innerWidth/2 - middleWidth/2);
+  }
+
+  heart.style.left = x + "px";
+  heart.style.top = (-50 - Math.random()*50) + "px";
+  heart.style.fontSize = (15 + Math.random()*15) + "px";
+  heart.style.animationDuration = (3 + Math.random()*3) + "s";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 6000);
+}
+
+// créer des cœurs toutes les 200ms
+setInterval(createRainHeart, 200);
+</script>
+
+</body>
+</html>
